@@ -87,6 +87,43 @@ int main(int argc, char const *argv[])
             while ( fscanf(fp_addresses, "%s", address) != EOF )
             {
                 int page1_index = get_page_part1(address);
+
+                if ( page_table[page1_index].available == USED )
+                {
+                    int page2_index = get_page_part2(address);
+                    
+                    char page_fault = page_table[page1_index].second_level[page2_index].validity;
+
+                    if (page_fault == INVALID) // Page Fault
+                    {
+                        int frame_index = available_frame(frame_table, num_of_frames);
+
+                        if ( frame_index == -1 ) // Page Replacement policy
+                        {
+                            if ( algorithm == LRU )
+                            {
+
+                            }
+                            else if ( algorithm == FIFO )
+                            {
+
+                            }
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else // Exception
+                {
+                    fprintf(fp_out, "%s e\n", address);
+                }
             }
         }
         else if (vmmode == 1)

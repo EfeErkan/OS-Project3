@@ -9,6 +9,8 @@
 
 #define USED '1'
 #define UNUSED '0'
+#define VALID '1'
+#define INVALID '0'
 
 //Definitions
 struct page_table1_entry
@@ -19,6 +21,7 @@ struct page_table1_entry
 
 struct page_table2_entry
 {
+    char validity;
     int frame_number;
 };
 
@@ -63,6 +66,11 @@ void set_page_table_interval(struct page_table1_entry *page_table, char hex1[HEX
     {
         page_table[i].available = USED;
         page_table[i].second_level = malloc(sizeof(struct page_table2_entry) * PAGE_PART2_LENGTH);
+
+        for (int j = 0; j < PAGE_PART2_LENGTH; j++)
+        {
+            page_table[i].second_level[j].validity = INVALID;
+        }
     }
 }
 
