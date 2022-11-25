@@ -2,7 +2,6 @@
 #define ADDRESS_PROCESSING
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #define HEX_LENGTH 10
