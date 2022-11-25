@@ -39,6 +39,7 @@ struct page_table1_entry *init_page_table()
         page_table[i].available = UNUSED;
         page_table[i].second_level = NULL;
     }
+    return page_table;
 }
 
 void free_page_table(struct page_table1_entry *page_table)

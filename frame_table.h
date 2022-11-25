@@ -30,6 +30,7 @@ struct frame_table_entry *init_frame_table(int size)
         frame_table[i].available = EMPTY;
         frame_table[i].LRU_count = 0;
     }
+    return frame_table;
 }
 
 void free_frame_table(struct frame_table_entry *frame_table)
