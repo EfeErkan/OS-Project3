@@ -12,6 +12,9 @@
 #define FIFO 2
 #define BASE_ADDRESS "0x00000000"
 
+void memory_management_unit(struct page_table_entry *page_table, int algorithm, struct frame_table_entry *frame_table, int num_of_frames,
+                            struct circular_queue *queue, char address[HEX_LENGTH], FILE *fp_out);
+
 int main(int argc, char const *argv[])
 {
     char in1[STR_LEN];
@@ -86,52 +89,58 @@ int main(int argc, char const *argv[])
 
             while ( fscanf(fp_addresses, "%s", address) != EOF )
             {
-                int page1_index = get_page_part1(address);
-
-                if ( page_table[page1_index].available == USED )
-                {
-                    int page2_index = get_page_part2(address);
-                    
-                    char page_fault = page_table[page1_index].second_level[page2_index].validity;
-
-                    if (page_fault == INVALID) // Page Fault
-                    {
-                        int frame_index = available_frame(frame_table, num_of_frames);
-
-                        if ( frame_index == -1 ) // Page Replacement policy
-                        {
-                            if ( algorithm == LRU )
-                            {
-
-                            }
-                            else if ( algorithm == FIFO )
-                            {
-
-                            }
-
-                        }
-                        else
-                        {
-
-                        }
-                    }
-                    else
-                    {
-
-                    }
-                }
-                else // Exception
-                {
-                    fprintf(fp_out, "%s e\n", address);
-                }
+                memory_management_unit(page_table, algorithm, frame_table, num_of_frames, &queue, address, fp_out);
             }
         }
         else if (vmmode == 1)
         {
-
+            // Random Address Generation
         }
         
     }
 
     return 0;
+}
+
+void memory_management_unit(struct page_table1_entry *page_table, int algorithm, struct frame_table_entry *frame_table, int num_of_frames,
+                            struct circular_queue *queue, char address[HEX_LENGTH], FILE *fp_out)
+{
+    int page1_index = get_page_part1(address);
+
+    if ( page_table[page1_index].available == USED )
+    {
+        int page2_index = get_page_part2(address);
+                    
+        char page_fault = page_table[page1_index].second_level[page2_index].validity;
+
+        if (page_fault == INVALID) // Page Fault
+        {
+            int frame_index = available_frame(frame_table, num_of_frames);
+
+            if ( frame_index == -1 ) // Page Replacement policy
+            {
+                if ( algorithm == LRU )
+                {
+
+                }
+                else if ( algorithm == FIFO )
+                {
+
+                }
+
+                }
+            else
+            {
+
+            }
+        }
+        else
+        {
+
+        }
+    }
+    else // Exception
+    {
+        fprintf(fp_out, "%s e\n", address);
+    }
 }
