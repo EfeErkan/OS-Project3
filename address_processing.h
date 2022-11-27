@@ -13,14 +13,17 @@
 // Definitions
 char *hex_to_binary(char hex[HEX_LENGTH]);
 
+char *binary_to_hex(char *binary, int binary_length);
+
 int binary_to_decimal(char binary[], int len, int i);
+
+char *decimal_to_binary(int decimal, int binary_length);
 
 void substring(char s[], char sub[], int position, int length);
 
 int get_page_part1(char hex[HEX_LENGTH]);
 
 int get_page_part2(char hex[HEX_LENGTH]);
-
 
 // Implementation
 
@@ -87,6 +90,57 @@ char *hex_to_binary(char hex[HEX_LENGTH])
     return binary;
 }
 
+char *binary_to_hex(char *binary, int binary_length)
+{
+    char *hex = malloc(binary_length / 4 + 2);
+
+    hex[0] = '0'; hex[1] = 'x';
+
+    char segment[4];
+    char c;
+
+    for (int i = 0; i < binary_length / 4; i++)
+    {
+        substring(binary, segment, i * 4, 4);
+
+        if (strcmp(segment, "0000") == 0)
+            c = '0';
+        else if (strcmp(segment, "0001") == 0)
+            c = '1';
+        else if (strcmp(segment, "0010") == 0)
+            c = '2';
+        else if (strcmp(segment, "0011") == 0)
+            c = '3';
+        else if (strcmp(segment, "0100") == 0)
+            c = '4';
+        else if (strcmp(segment, "0101") == 0)
+            c = '5';
+        else if (strcmp(segment, "0110") == 0)
+            c = '6';
+        else if (strcmp(segment, "0111") == 0)
+            c = '7';
+        else if (strcmp(segment, "1000") == 0)
+            c = '8';
+        else if (strcmp(segment, "1001") == 0)
+            c = '9';
+        else if (strcmp(segment, "1010") == 0)
+            c = 'a';
+        else if (strcmp(segment, "1011") == 0)
+            c = 'b';
+        else if (strcmp(segment, "1100") == 0)
+            c = 'c';
+        else if (strcmp(segment, "1101") == 0)
+            c = 'd';
+        else if (strcmp(segment, "1110") == 0)
+            c = 'e';
+        else if (strcmp(segment, "1111") == 0)
+            c = 'f';
+
+        hex[i + 2] = c;
+    }
+    return hex;
+}
+
 int binary_to_decimal(char binary[], int len, int i)
 {
    if (i == len - 1)
@@ -97,6 +151,36 @@ int binary_to_decimal(char binary[], int len, int i)
    temp = temp << len - i - 1;
    temp = temp + binary_to_decimal(binary, len, i + 1);
    return temp;
+}
+
+char *decimal_to_binary(int decimal, int binary_length)
+{
+    int binaryNum[32];
+
+    char *binary = malloc(binary_length);
+  
+    // counter for binary array
+    int i = 0;
+    while (decimal > 0) 
+    {
+        binaryNum[i] = decimal % 2;
+        decimal = decimal / 2;
+        i++;
+    }
+
+    for (int j = binary_length - 1; j >= 0; j--)
+    {
+        if (j >= i)
+        {
+            binary[binary_length - j - 1] = '0';
+        }
+        else
+        {
+            binary[binary_length - j - 1] = binaryNum[j] + '0';
+        }
+        
+    }
+    return binary;   
 }
 
 void substring(char s[], char sub[], int position, int length) 

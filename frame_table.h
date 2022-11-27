@@ -10,7 +10,8 @@ struct frame_table_entry
 {
     char available;
     int LRU_count;
-    int page_number;
+    int page_number1;
+    int page_number2;
 };
 
 struct frame_table_entry *init_frame_table(int size);
@@ -18,6 +19,8 @@ struct frame_table_entry *init_frame_table(int size);
 void free_frame_table(struct frame_table_entry *frame_table);
 
 int available_frame(struct frame_table_entry *frame_table, int size);
+
+int LRU_frame(struct frame_table_entry *frame_table, int size);
 
 // Implementation
 
@@ -48,6 +51,21 @@ int available_frame(struct frame_table_entry *frame_table, int size)
         }
     }
     return -1;
+}
+
+int LRU_frame(struct frame_table_entry *frame_table, int size)
+{
+    int min = frame_table[0].LRU_count;
+
+    for (int i = 0; i < size; i++)
+    {
+        if ( min < frame_table[i].LRU_count)
+        {
+            min = frame_table[i].LRU_count;
+        }
+    }
+
+    return min;
 }
 
 #endif

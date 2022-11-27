@@ -121,18 +121,36 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
             {
                 if ( algorithm == LRU )
                 {
-
+                    frame_index = LRU_frame(frame_table, num_of_frames);
                 }
                 else if ( algorithm == FIFO )
                 {
-
+                    frame_index = dequeue(*queue);
                 }
-
-                }
-            else
-            {
 
             }
+            
+            page_table[page1_index].second_level[page2_index].frame_number = frame_index;
+            page_table[page1_index].second_level[page2_index].validity = VALID;
+            frame_table[frame_index].available = EXISTS;
+            frame_table[frame_index].page_number1 = page1_index;
+            frame_table[frame_index].page_number2 = page2_index;
+            frame_table[frame_index].LRU_count++;
+            
+            if (algorithm == FIFO)
+                enqueue(*queue, frame_index);
+
+
+            char *binary_frame_number = decimal_to_binary(frame_index, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
+            char *hex_frame_number = binary_to_hex(binary_frame_number, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
+
+            char offset[OFFSET_LENGTH];
+            substring(address, offset, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH, OFFSET_LENGTH);
+
+            char physical_address[ADDRESS_LENGTH];
+            strcat(physical_address, hex_frame_number);
+            strcat(physical_address, offset);
+
         }
         else
         {
