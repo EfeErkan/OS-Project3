@@ -122,6 +122,7 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
                 if ( algorithm == LRU )
                 {
                     frame_index = LRU_frame(frame_table, num_of_frames);
+                    frame_table[frame_index].LRU_count = 0;
                 }
                 else if ( algorithm == FIFO )
                 {
@@ -135,7 +136,7 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
             frame_table[frame_index].available = EXISTS;
             frame_table[frame_index].page_number1 = page1_index;
             frame_table[frame_index].page_number2 = page2_index;
-            frame_table[frame_index].LRU_count++;
+            update_LRU(frame_table, num_of_frames, frame_index);
             
             if (algorithm == FIFO)
                 enqueue(*queue, frame_index);
@@ -150,7 +151,11 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
             char physical_address[ADDRESS_LENGTH];
             strcat(physical_address, hex_frame_number);
             strcat(physical_address, offset);
+            
+            fprintf(fp_out, "%s %s x\n", address, physical_address);
 
+            free(binary_frame_number);
+            free(hex_frame_number);
         }
         else
         {

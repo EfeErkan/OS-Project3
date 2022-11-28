@@ -22,6 +22,8 @@ int available_frame(struct frame_table_entry *frame_table, int size);
 
 int LRU_frame(struct frame_table_entry *frame_table, int size);
 
+void update_LRU(struct frame_table_entry *frame_table, int size, int index);
+
 // Implementation
 
 struct frame_table_entry *init_frame_table(int size)
@@ -55,17 +57,28 @@ int available_frame(struct frame_table_entry *frame_table, int size)
 
 int LRU_frame(struct frame_table_entry *frame_table, int size)
 {
-    int min = frame_table[0].LRU_count;
+    int max = frame_table[0].LRU_count;
 
     for (int i = 0; i < size; i++)
     {
-        if ( min < frame_table[i].LRU_count)
+        if ( max > frame_table[i].LRU_count)
         {
-            min = frame_table[i].LRU_count;
+            max = frame_table[i].LRU_count;
         }
     }
 
-    return min;
+    return max;
+}
+
+void update_LRU(struct frame_table_entry *frame_table, int size, int index)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if ( i != index && frame_table[i].available == EXISTS )
+        {
+            frame_table[i].LRU_count++;
+        }
+    }
 }
 
 #endif
