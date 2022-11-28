@@ -157,9 +157,26 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
             free(binary_frame_number);
             free(hex_frame_number);
         }
-        else
+        else // No Page Fault
         {
+            int translation_frame = page_table[page1_index].second_level[page2_index].frame_number;
+            frame_table[translation_frame].LRU_count = 0;
+            update_LRU(frame_table, num_of_frames, translation_frame);
 
+            char *binary_frame_number = decimal_to_binary(translation_frame, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
+            char *hex_frame_number = binary_to_hex(binary_frame_number, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
+
+            char offset[OFFSET_LENGTH];
+            substring(address, offset, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH, OFFSET_LENGTH);
+
+            char physical_address[ADDRESS_LENGTH];
+            strcat(physical_address, hex_frame_number);
+            strcat(physical_address, offset);
+            
+            fprintf(fp_out, "%s %s\n", address, physical_address);
+
+            free(binary_frame_number);
+            free(hex_frame_number);
         }
     }
     else // Exception
