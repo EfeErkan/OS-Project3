@@ -13,7 +13,7 @@
 #define FIFO 2
 #define BASE_ADDRESS "0x00000000"
 
-void memory_management_unit(struct page_table_entry *page_table, int algorithm, struct frame_table_entry *frame_table, int num_of_frames,
+void memory_management_unit(struct page_table1_entry *page_table, int algorithm, struct frame_table_entry *frame_table, int num_of_frames,
                             struct circular_queue *queue, char address[HEX_LENGTH], FILE *fp_out);
 
 int main(int argc, char const *argv[])
