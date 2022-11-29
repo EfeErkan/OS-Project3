@@ -137,6 +137,10 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
                     frame_index = dequeue(*queue);
                 }
 
+                int p1 = frame_table[frame_index].page_number1;
+                int p2 = frame_table[frame_index].page_number2;
+
+                page_table[p1].second_level[p2].validity = INVALID;
             }
             
             page_table[page1_index].second_level[page2_index].frame_number = frame_index;
