@@ -25,6 +25,8 @@ int get_page_part1(char hex[HEX_LENGTH]);
 
 int get_page_part2(char hex[HEX_LENGTH]);
 
+char *random_address_generation(char base[HEX_LENGTH], char size[HEX_LENGTH]);
+
 // Implementation
 
 char *hex_to_binary(char hex[HEX_LENGTH])
@@ -219,6 +221,24 @@ int get_page_part2(char hex[HEX_LENGTH])
     free(binary);
     
     return binary_to_decimal(page_part2_binary, PAGE_PART2_LENGTH, 0);
+}
+
+char *random_address_generation(char base[HEX_LENGTH], char size[HEX_LENGTH])
+{
+    char *base_binary = hex_to_binary(base);
+    int base_int = binary_to_decimal(base_binary, ADDRESS_LENGTH, 0);
+    free(base_binary);
+
+    char *size_binary = hex_to_binary(size);
+    int size_int = binary_to_decimal(size_binary, ADDRESS_LENGTH, 0);
+    free(size_binary);
+
+    int random_address_int = ( rand() % size_int ) + base_int;
+    char *random_address_binary = decimal_to_binary(random_address_int, ADDRESS_LENGTH);
+    char *random_address_hex = binary_to_hex(random_address_binary, ADDRESS_LENGTH);
+    free(random_address_binary);
+
+    return random_address_hex;
 }
 
 #endif

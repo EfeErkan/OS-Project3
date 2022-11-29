@@ -5,17 +5,18 @@
 
 int main(int argc, char const *argv[])
 {
-    int decimal = 10;
-
-    char *binary = decimal_to_binary(decimal, 20);
-
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 10; i++)
     {
-        printf("%c", binary[i]);
+        char *address = random_address_generation("0x00000000", "0x10000000");
+
+        for (int i = 0; i < 10; i++)
+        {
+            printf("%c", address[i]);
+        }
+        printf("\n");
+
+        free(address);
     }
-    printf("\n");
-
-    free(binary);
-
+    
     return 0;
 }

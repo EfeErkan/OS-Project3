@@ -6,7 +6,8 @@
 #include "circular_queue.h"
 #include "frame_table.h"
 
-#define CMD_LENGTH 7
+#define MIN_CMD_LENGTH 7
+#define MAX_CMD_LENGTH 9
 #define STR_LEN 64
 #define LRU 1
 #define FIFO 2
@@ -23,20 +24,21 @@ int main(int argc, char const *argv[])
     int num_of_frames;
     int algorithm;
     char vmsize[HEX_LENGTH];
+    int addrcount;
     int vmmode = 0;
 
     FILE *fp_intervals;
     FILE *fp_addresses;
     FILE *fp_out;
 
-    if ( argc != CMD_LENGTH )
+    if ( argc < MIN_CMD_LENGTH )
     {
         fprintf(stderr, "Incorrect number of Command line arguments!\n");
         exit(-1);
     }
     else
     {
-        if (strcmp(argv[5], "-a") == 0)
+        if (argc == MIN_CMD_LENGTH)
         {
             strcpy(in1, argv[1]); strcpy(in2, argv[2]);
             num_of_frames = atoi(argv[3]);
@@ -47,12 +49,13 @@ int main(int argc, char const *argv[])
             fp_addresses = fopen(in2, "r");
             vmmode = 0;
         }
-        else if (strcmp(argv[5], "-r") == 0)
+        else if (argc == MAX_CMD_LENGTH)
         {
             num_of_frames = atoi(argv[1]);
             strcpy(out, argv[2]);
             algorithm = atoi(argv[4]);
             strcpy(vmsize, argv[6]);
+            addrcount = atoi(argv[8]);
             vmmode = 1;
         }
 
@@ -94,7 +97,12 @@ int main(int argc, char const *argv[])
         }
         else if (vmmode == 1)
         {
-            // Random Address Generation
+            for (int i = 0; i < addrcount; i++)
+            {
+                char *address = random_address_generation(BASE_ADDRESS, vmsize);
+                memory_management_unit(page_table, algorithm, frame_table, num_of_frames, &queue, address, fp_out);
+                free(address);
+            }
         }
         
     }
