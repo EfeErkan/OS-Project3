@@ -65,7 +65,7 @@ void set_page_table_interval(struct page_table1_entry *page_table, char hex1[HEX
     for (int i = start; i <= end; i++)
     {
         page_table[i].available = USED;
-        page_table[i].second_level = malloc(sizeof(struct page_table2_entry) * PAGE_PART2_LENGTH);
+        page_table[i].second_level = malloc(sizeof(struct page_table2_entry) * PAGE_TABLE2_LEN);
 
         for (int j = 0; j < PAGE_PART2_LENGTH; j++)
         {
