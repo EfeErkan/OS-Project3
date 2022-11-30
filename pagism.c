@@ -66,7 +66,7 @@ int main(int argc, char const *argv[])
         struct frame_table_entry *frame_table = init_frame_table(num_of_frames);
 
         struct circular_queue queue;
-        init_queue(queue, num_of_frames);
+        init_queue(&queue, num_of_frames);
 
         // Adjusting Page Table
         if (vmmode == 0)
@@ -104,6 +104,8 @@ int main(int argc, char const *argv[])
                 free(address);
             }
         }
+
+        
         
     }
 
@@ -133,7 +135,7 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
                 }
                 else if ( algorithm == FIFO )
                 {
-                    frame_index = dequeue(*queue);
+                    frame_index = dequeue(queue);
                 }
 
                 int p1 = frame_table[frame_index].page_number1;
@@ -150,7 +152,7 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
             update_LRU(frame_table, num_of_frames, frame_index);
             
             if (algorithm == FIFO)
-                enqueue(*queue, frame_index);
+                enqueue(queue, frame_index);
 
 
             char *binary_frame_number = decimal_to_binary(frame_index, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
@@ -176,6 +178,9 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
             int translation_frame = page_table[page1_index].second_level[page2_index].frame_number;
             frame_table[translation_frame].LRU_count = 0;
             update_LRU(frame_table, num_of_frames, translation_frame);
+
+            if (algorithm == FIFO)
+                enqueue(queue, translation_frame);
 
             char *binary_frame_number = decimal_to_binary(translation_frame, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
             char *hex_frame_number = binary_to_hex(binary_frame_number, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
