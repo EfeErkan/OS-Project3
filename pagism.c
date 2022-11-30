@@ -27,9 +27,9 @@ int main(int argc, char const *argv[])
     int addrcount;
     int vmmode = 0;
 
-    FILE *fp_intervals;
-    FILE *fp_addresses;
-    FILE *fp_out;
+    FILE *fp_intervals = NULL;
+    FILE *fp_addresses = NULL;
+    FILE *fp_out = NULL;
 
     if ( argc < MIN_CMD_LENGTH )
     {
@@ -105,7 +105,17 @@ int main(int argc, char const *argv[])
             }
         }
 
+        free_page_table(page_table);
+        free_frame_table(frame_table);
+        free_queue(&queue);
+
+        fclose(fp_out);
         
+        if (vmmode == 0)
+        {
+            fclose(fp_addresses);
+            fclose(fp_intervals);
+        }
         
     }
 
