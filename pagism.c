@@ -29,7 +29,6 @@ int main(int argc, char const *argv[])
 
     FILE *fp_intervals = NULL;
     FILE *fp_addresses = NULL;
-    FILE *fp_out = NULL;
 
     if ( argc < MIN_CMD_LENGTH )
     {
@@ -110,7 +109,7 @@ int main(int argc, char const *argv[])
         free_queue(&queue);
 
         fclose(fp_out);
-        
+
         if (vmmode == 0)
         {
             fclose(fp_addresses);
