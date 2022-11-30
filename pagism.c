@@ -157,12 +157,15 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
             char *binary_frame_number = decimal_to_binary(frame_index, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
             char *hex_frame_number = binary_to_hex(binary_frame_number, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
 
-            char offset[4];
+            char *offset = malloc(5);
             substring(address, offset, 6, 4);
-
+            
             char physical_address[ADDRESS_LENGTH];
+            physical_address[0] = '\0';
             strcat(physical_address, hex_frame_number);
             strcat(physical_address, offset);
+
+            free(offset);
             
             fprintf(fp_out, "%s %s x\n", address, physical_address);
 
@@ -178,12 +181,15 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
             char *binary_frame_number = decimal_to_binary(translation_frame, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
             char *hex_frame_number = binary_to_hex(binary_frame_number, PAGE_PART1_LENGTH + PAGE_PART2_LENGTH);
 
-            char offset[4];
+            char *offset = malloc(5);
             substring(address, offset, 6, 4);
 
-            char physical_address[HEX_LENGTH];
+            char physical_address[ADDRESS_LENGTH];
+            physical_address[0] = '\0';
             strcat(physical_address, hex_frame_number);
             strcat(physical_address, offset);
+
+            free(offset);
             
             fprintf(fp_out, "%s %s\n", address, physical_address);
 
