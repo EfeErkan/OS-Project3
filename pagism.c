@@ -130,7 +130,6 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
                 if ( algorithm == LRU )
                 {
                     frame_index = LRU_frame(frame_table, num_of_frames);
-                    frame_table[frame_index].LRU_count = 0;
                 }
                 else if ( algorithm == FIFO )
                 {
@@ -201,4 +200,6 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
     {
         fprintf(fp_out, "%s e\n", address);
     }
+
+    print_LRU_counts(frame_table, num_of_frames);
 }
