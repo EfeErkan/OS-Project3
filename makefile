@@ -1,4 +1,4 @@
 compile: address_processing.h page_table.h frame_table.h circular_queue.h
-	gcc pagism.c -o pagism
+	gcc pagesim.c -o pagesim
 clean:
-	rm out.txt pagism
+	rm out.txt pagesim

@@ -72,17 +72,30 @@ int main(int argc, char const *argv[])
         {
             char address1[HEX_LENGTH];
             char address2[HEX_LENGTH];
+            char buffer[HEX_LENGTH];
 
-            while ( fscanf(fp_intervals, "%s", address1) != EOF )
+            int count = 0;
+
+            while ( fscanf(fp_intervals, "%s", buffer) != EOF )
             {
-                fscanf(fp_intervals, "%s", address2);
-                set_page_table_interval(page_table, address1, address2);
+                count++;
+                if (count % 2 == 1)
+                {
+                    strcpy(address1, buffer);
+                }
+                else
+                {
+                    strcpy(address2, buffer);
+                    set_page_table_interval(page_table, address1, address2);
+                }
             }
         }
         else if (vmmode == 1)
         {
             set_page_table_interval(page_table, BASE_ADDRESS, vmsize);
         }
+
+        fprintf(fp_out, "%-10s %-10s\n", "Virtual", "Physical");
 
         // Paging
         if (vmmode == 0)
@@ -125,11 +138,10 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
                             struct circular_queue *queue, char address[HEX_LENGTH], FILE *fp_out)
 {
     int page1_index = get_page_part1(address);
+    int page2_index = get_page_part2(address);
 
-    if ( page_table[page1_index].available == USED )
-    {
-        int page2_index = get_page_part2(address);
-                    
+    if ( page_table[page1_index].available == USED && page_table[page1_index].second_level[page2_index].available == USED )
+    {  
         char page_fault = page_table[page1_index].second_level[page2_index].validity;
 
         if (page_fault == INVALID) // Page Fault
@@ -215,5 +227,5 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
         fprintf(fp_out, "%s e\n", address);
     }
 
-    print_LRU_counts(frame_table, num_of_frames);
+    //print_LRU_counts(frame_table, num_of_frames);
 }

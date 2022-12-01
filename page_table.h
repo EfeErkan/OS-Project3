@@ -21,6 +21,7 @@ struct page_table1_entry
 
 struct page_table2_entry
 {
+    char available;
     char validity;
     int frame_number;
 };
@@ -58,18 +59,42 @@ void free_page_table(struct page_table1_entry *page_table)
 }
 
 void set_page_table_interval(struct page_table1_entry *page_table, char hex1[HEX_LENGTH], char hex2[HEX_LENGTH])
-{
-    int start = get_page_part1(hex1);
-    int end = get_page_part1(hex2);
+{   
+    int hex1_page1_num = get_page_part1(hex1);
+    int hex1_page2_num = get_page_part2(hex1);
+    int hex2_page1_num = get_page_part1(hex2);
+    int hex2_page2_num = get_page_part2(hex2);
 
-    for (int i = start; i <= end; i++)
+    printf("%d %d -- %d %d\n", hex1_page1_num, hex1_page2_num, hex2_page1_num, hex2_page2_num);
+
+    for (int i = hex1_page1_num; i <= hex2_page1_num; i++)
     {
-        page_table[i].available = USED;
-        page_table[i].second_level = malloc(sizeof(struct page_table2_entry) * PAGE_TABLE2_LEN);
-
-        for (int j = 0; j < PAGE_TABLE2_LEN; j++)
+        if (page_table[i].available == UNUSED)
         {
-            page_table[i].second_level[j].validity = INVALID;
+            page_table[i].available = USED;
+            page_table[i].second_level = malloc(sizeof(struct page_table2_entry) * PAGE_TABLE2_LEN);
+
+            for (int j = 0; j < PAGE_TABLE2_LEN; j++)
+            {
+                page_table[i].second_level[j].available = UNUSED;
+            }
+        }
+    }
+
+    int p1 = hex1_page1_num;
+    int p2 = hex1_page2_num;
+
+    while (p1 != hex2_page1_num || p2 != hex2_page2_num)
+    {
+        page_table[p1].second_level[p2].available = USED;
+        page_table[p1].second_level[p2].validity = INVALID;
+
+        p2++;
+
+        if (p2 == PAGE_TABLE2_LEN)
+        {
+            p2 = 0;
+            p1++;
         }
     }
 }
