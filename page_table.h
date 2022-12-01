@@ -29,7 +29,7 @@ struct page_table1_entry *init_page_table();
 
 void free_page_table(struct page_table1_entry *page_table);
 
-void set_page_table(struct page_table1_entry *page_table, char hex1[HEX_LENGTH], char hex2[HEX_LENGTH]);
+void set_page_table_interval(struct page_table1_entry *page_table, char hex1[HEX_LENGTH], char hex2[HEX_LENGTH]);
 
 // Implementation
 
