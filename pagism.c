@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
     FILE *fp_intervals = NULL;
     FILE *fp_addresses = NULL;
 
-    if ( argc < MIN_CMD_LENGTH )
+    if ( argc < MIN_CMD_LENGTH || argc > MAX_CMD_LENGTH )
     {
         fprintf(stderr, "Incorrect number of Command line arguments!\n");
         exit(-1);
