@@ -33,7 +33,8 @@ char *random_address_generation(char base[HEX_LENGTH], char size[HEX_LENGTH]);
 
 char *hex_to_binary(char hex[HEX_LENGTH])
 {
-    char *binary = (char*) malloc(ADDRESS_LENGTH);
+    char *binary = (char*) malloc(ADDRESS_LENGTH + 1);
+    binary[0] = '\0';
 
     for ( int i = 2; i < HEX_LENGTH; i++ ) 
     {
@@ -152,7 +153,7 @@ int binary_to_decimal(char binary[], int len, int i)
 
    int temp = binary[i] - '0';
 
-   temp = temp << len - i - 1;
+   temp = temp << (len - i - 1);
    temp = temp + binary_to_decimal(binary, len, i + 1);
    return temp;
 }
@@ -202,7 +203,6 @@ void substring(char s[], char sub[], int position, int length)
 int get_page_part1(char hex[HEX_LENGTH])
 {
     char page_part1_binary[PAGE_PART1_LENGTH];
-    int page_num;
 
     char *binary = hex_to_binary(hex);
     substring(binary, page_part1_binary, 0, PAGE_PART1_LENGTH);
@@ -215,7 +215,6 @@ int get_page_part1(char hex[HEX_LENGTH])
 int get_page_part2(char hex[HEX_LENGTH])
 {
     char page_part2_binary[PAGE_PART2_LENGTH];
-    int page_num;
 
     char *binary = hex_to_binary(hex);
     substring(binary, page_part2_binary, PAGE_PART1_LENGTH, PAGE_PART2_LENGTH);

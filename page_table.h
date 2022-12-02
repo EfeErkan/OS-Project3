@@ -59,7 +59,7 @@ void free_page_table(struct page_table1_entry *page_table)
 }
 
 void set_page_table_interval(struct page_table1_entry *page_table, char hex1[HEX_LENGTH], char hex2[HEX_LENGTH])
-{   
+{
     int hex1_page1_num = get_page_part1(hex1);
     int hex1_page2_num = get_page_part2(hex1);
     int hex2_page1_num = get_page_part1(hex2);
