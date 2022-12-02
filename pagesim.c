@@ -197,7 +197,7 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
         else // No Page Fault
         {
             int translation_frame = page_table[page1_index].second_level[page2_index].frame_number;
-            frame_table[translation_frame].LRU_count = 0;
+            
             update_LRU(frame_table, num_of_frames, translation_frame);
 
             if (algorithm == FIFO)
