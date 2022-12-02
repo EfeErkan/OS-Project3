@@ -5,6 +5,8 @@
 #include <string.h>
 
 #define HEX_LENGTH 10
+#define HEX_OFFSET_LENGTH 3
+#define HEX_PAGE_LENGTH 5
 #define ADDRESS_LENGTH 32
 #define PAGE_PART1_LENGTH 10
 #define PAGE_PART2_LENGTH 10
