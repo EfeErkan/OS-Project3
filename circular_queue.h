@@ -49,7 +49,7 @@ int isFull(struct circular_queue *queue)
 
 void enqueue(struct circular_queue *queue, int value)
 {
-    if (queue->front == -1) /* Insert First Element */
+    if (queue->front == -1)
     {
         queue->front = queue->rear = 0;
         queue->arr[queue->rear] = value;
@@ -68,19 +68,17 @@ void enqueue(struct circular_queue *queue, int value)
 
 int dequeue(struct circular_queue *queue)
 {
-    int data = queue->arr[queue->front];
-    queue->arr[queue->front] = -1;
-    if (queue->front == queue->rear)
+    int element = queue->arr[queue->front];
+    if (queue->front == queue->rear) 
     {
-        queue->front = -1;
-        queue->rear = -1;
+      queue->front = -1;
+      queue->rear = -1;
+    } 
+    else 
+    {
+      queue->front = (queue->front + 1) % queue->size;
     }
-    else if (queue->front == queue->size - 1)
-        queue->front = 0;
-    else
-        queue->front++;
-  
-    return data;
+    return element;
 }
 
 #endif
