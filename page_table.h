@@ -65,8 +65,6 @@ void set_page_table_interval(struct page_table1_entry *page_table, char hex1[HEX
     int hex2_page1_num = get_page_part1(hex2);
     int hex2_page2_num = get_page_part2(hex2);
 
-    printf("%d %d -- %d %d\n", hex1_page1_num, hex1_page2_num, hex2_page1_num, hex2_page2_num);
-
     for (int i = hex1_page1_num; i <= hex2_page1_num; i++)
     {
         if (page_table[i].available == UNUSED)

@@ -222,6 +222,4 @@ void memory_management_unit(struct page_table1_entry *page_table, int algorithm,
     {
         fprintf(fp_out, "%s e\n", address);
     }
-
-    //print_LRU_counts(frame_table, num_of_frames);
 }
